@@ -97,28 +97,58 @@ void setup() {
 		for (int j = 0; j < soilHealth[i].length; j++) {
 			 // 0: no soil, 15: soil only, 30: 1 stone, 45: 2 stones
 			soilHealth[i][j] = 15;
+      //soil 1
+      if(i==j){
+       soilHealth[i][j]=30;
+      }
+      //soil 2
+      if(i==1 || i==2 || i==5 || i==6 ){
+        if(j==8 ||j==11 || j==12 || j==15){
+         soilHealth[i][j]=30; 
+        }
+      }
+      if(i==0 || i==4 || i==3 || i==7){
+      if(j==9 || j==10 || j==13 ||j==14){
+       soilHealth[i][j]=30; 
+      }
+      }
+      //soil3
+      if(i==1 || i==4 || i==7){
+        if(j==16 || j==19 || j==22){
+         soilHealth[i][j]=30; 
+        }
+        if(j==17 || j==20 || j==23){
+         soilHealth[i][j]=45; 
+        }
+      }
+      if(i==0 | i==3 || i==6){
+         if(j==17 || j==20 || j==23){
+         soilHealth[i][j]=30; 
+        }
+         if(j==18 || j==21){
+         soilHealth[i][j]=45; 
+        }
+      }
+      if(i==2 || i==5){
+        if(j==18 || j==21){
+         soilHealth[i][j]=30; 
+        }
+        if(j==16 || j==19 || j==22){
+         soilHealth[i][j]=45; 
+        }
+      }
+      
 }
 }
-   //hole
+   //hole(health)
     holeX=new float[24];
     holeY=new float[24];
-    for(int i=0;i<24;i++){
+    for(int p=1;p<24;p++){
      int count=1+floor(random(2));
      for(int k=0;k<count;k++){
-      holeX[i]=( k+floor(random(7)))*80;
-      holeY[i]=(i+1)*80;
+       int col=floor(random(8));
+       soilHealth[col][p]=0;
      }
-
-    }
-    holeXX=new float[24];
-    holeYY=new float[24];
-    for(int i=0;i<24;i++){
-     int count=1+floor(random(2));
-     for(int k=0;k<count;k++){
-      holeXX[i]=( k+floor(random(7)))*80;
-      holeYY[i]=(i+1)*80;
-     }
-
     }
 
 	
@@ -126,38 +156,22 @@ void setup() {
 	// Initialize soidiers and their position
    soldierY=new float[6];
    soldierX=new float[6];
-    soldierY[0]=floor(random(0,4))*80;
-  soldierY[1]=floor(random(4,8))*80;
-   soldierY[2]=floor(random(8,12))*80;
-   soldierY[3]=floor(random(12,16))*80;
-  soldierY[4]=floor(random(16,20))*80;
-   soldierY[5]=floor(random(20,24))*80;
-   
-       soldierX[0]=random(640);
-  soldierX[1]=random(640);
-   soldierX[2]=random(640);
-   soldierX[3]=random(640);
-  soldierX[4]=random(640);
-   soldierX[5]=random(640);
+  for(int i=0;i<6;i++){
+   int col= floor(random(8));
+   int row=floor(random(4))+i*4;
+   soldierY[i]=row*SOIL_SIZE;
+   soldierX[i]=col*col;
+  }
 	// Initialize cabbages and their position
   cabbageX=new float[6];
   cabbageY=new float[6];
+  for(int i=0;i<6;i++){
+   int col= floor(random(8));
+   int row=floor(random(4))+i*4;
+   cabbageY[i]=row*SOIL_SIZE;
+   cabbageX[i]=col*SOIL_SIZE;
+  }
 
-   cabbageY[0]=floor(random(0,4))*80;
-   cabbageY[1]=floor(random(4,8))*80;
-   cabbageY[2]=floor(random(8,12))*80;
-   cabbageY[3]=floor(random(12,16))*80;
-   cabbageY[4]=floor(random(16,20))*80;
-   cabbageY[5]=floor(random(20,24))*80;
-
-    cabbageX[0]=floor(random(8))*80;
-     cabbageX[1]=floor(random(8))*80;
-      cabbageX[2]=floor(random(8))*80;
-       cabbageX[3]=floor(random(8))*80;
-        cabbageX[4]=floor(random(8))*80;
-        cabbageX[5]=floor(random(8))*80;
-
-   
   
 }
 
@@ -216,82 +230,24 @@ void draw() {
 				// NOTE: To avoid errors on webpage, you can either use floor(j / 4) or (int)(j / 4) to make sure it's an integer.
 				int areaIndex = floor(j / 4);
 				image(soils[areaIndex][4], i * SOIL_SIZE, j * SOIL_SIZE);
-        //rock1
-				float rock1Y=0;
-      for(int k=0; k<8; k++){
-        float rock1X=k*80;
-        image(stones[0][4],rock1X,rock1Y);
-        rock1Y+=80;       
-      }
-        //rock2
-      float rock2Y=0;
-      float rock2YY=0;
-      for(int p=0; p<8; p++){
-        float rock2XX=p*160;
-        float rock2X=p*80;
-        image(stones[0][4],width-80*7-rock2X,width/8*8+rock2Y);
-        image(stones[0][4],width-80*6-rock2XX,width/8*8+rock2YY);
-        image(stones[0][4],width-80*5-rock2XX,width/8*9+rock2YY);
-        image(stones[0][4],width-80*3-rock2X,width/8*8+rock2Y);
-        image(stones[0][4],width-80*2-rock2XX,width/8*8+rock2YY);
-        image(stones[0][4],width-80-rock2XX,width/8*9+rock2YY);
-        image(stones[0][4],width-80-rock2X,width/8*10+rock2Y);
-        image(stones[0][4],width+80*2-rock2XX,width/8*8+rock2YY);
-        image(stones[0][4],width+80-rock2XX,width/8*11+rock2YY);
-        image(stones[0][4],width-80-rock2X,width/8*14+rock2Y);
-        rock2Y+=80;    
-        rock2YY+=160;
-      }
-      //rock3
-
-       for(int y3=1280; y3<1920; y3+=80){
-      for(int x=0; x<=width; x+=240){
-        if((y3-1280)%(80*3) == 0) {
-          image(stones[0][4], x+80, y3);
-          image(stones[0][4],x+80+80,y3);
+        //rock
+				if(soilHealth[i][j]==30){
+        image(stones[0][4],i * SOIL_SIZE, j * SOIL_SIZE);
         }
-        else if((y3-1280)/80 == 1 || (y3-1280)/80 == 4 || (y3-1280)/80 == 7){
-          image(stones[0][4], x, y3);
-          image(stones[0][4],x+80,y3);
+        if(soilHealth[i][j]==45){
+         image(stones[0][4],i * SOIL_SIZE, j * SOIL_SIZE);
+         image(stones[1][4],i * SOIL_SIZE, j * SOIL_SIZE);
         }
-        else{
-          image(stones[0][4], x-80, y3);
-          image(stones[0][4],x,y3);
-        }
-      }
+        //hole
+    if(soilHealth[i][j]==0){
+     image( soilEmpty,i * SOIL_SIZE, j * SOIL_SIZE);
     }
     
-    for(int y3=1280; y3<1920; y3+=80){
-      for(int x=0; x<=width; x+=240){
-        if((y3-1280)%(80*3) == 0) {
-          image(stones[1][4], x+80+80, y3);
-        }
-        else if((y3-1280)/80 == 1 ||(y3-1280)/80 == 4||(y3-1280)/80 == 7){
-          image(stones[1][4], x+80, y3);
-        }
-        else{
-          image(stones[1][4], x, y3);
-        }
-      }
-    }
 			}
 		}
 
 
-    //hole
-    for(int i=0;i<24;i++){
-    image(soilEmpty,holeX[i],holeY[i]);
-   
-    
-    
-    }
-    for(int i=0;i<24;i++){
-    image(soilEmpty,holeXX[i],holeYY[i]);
 
-    }
-    
-    
-    
 
 		// Cabbages
 		// > Remember to check if playerHealth is smaller than PLAYER_MAX_HEALTH!
@@ -299,9 +255,10 @@ for(int i=0;i<6;i++){
   image(cabbage,cabbageX[i], cabbageY[i]);
 if(playerX+80>cabbageX[i] && playerX<cabbageX[i]+80 && 
       playerY+80>cabbageY[i] && playerY<cabbageY[i]+80){
+      if(playerHealth < PLAYER_MAX_HEALTH){
       playerHealth++;  
       cabbageX[i]=-500;
-      cabbageY[i]=-500;
+      }
       }
 }
 
@@ -426,18 +383,23 @@ if(playerX+80>cabbageX[i] && playerX<cabbageX[i]+80 &&
 
 
 		// Soldiers
-for(int i=0;i<6;i++){
-  
-  image(soldier,soldierX[i], cabbageY[i]);
+  for(int i=0;i<6;i++){
+  image(soldier,soldierX[i], soldierY[i]);
   soldierX[i]+=soldierSpeed;
   if(soldierX[i]>640){
        soldierX[i]=-80; 
       }
       if(playerX+80>soldierX[i] && playerX<soldierX[i]+80 && 
       playerY+80>soldierY[i] && playerY<soldierY[i]+80){
+      playerHealth -- ;
+      playerX=PLAYER_INIT_X;
+      playerY=PLAYER_INIT_Y;
+      playerMoveTimer = 0;
       
-      playerX=320;
-      playerY=80;
+      
+       playerCol = (int) (playerX / SOIL_SIZE);
+       playerRow = (int) (playerY / SOIL_SIZE);
+       soilHealth[playerCol][playerRow+1] = 15;
       }
 }
 		// > Remember to stop player's moving! (reset playerMoveTimer)
@@ -467,7 +429,9 @@ for(int i=0;i<6;i++){
 		// Health UI
     for(int i=0; i<playerHealth; i++){
      image(life, lifeX+i*70,10);
-
+    if(playerHealth>=PLAYER_MAX_HEALTH){
+      playerHealth=PLAYER_MAX_HEALTH;
+    }
      
     }
      if(playerHealth == 0){
@@ -502,14 +466,90 @@ for(int i=0;i<6;i++){
 					for (int j = 0; j < soilHealth[i].length; j++) {
 						 // 0: no soil, 15: soil only, 30: 1 stone, 45: 2 stones
 						soilHealth[i][j] = 15;
-					}
-				}
 
-				// Initialize soidiers and their position
 
-				// Initialize cabbages and their position
+      //soil 1
+      if(i==j){
+       soilHealth[i][j]=30;
+      }
+      //soil 2
+      if(i==1 || i==2 || i==5 || i==6 ){
+        if(j==8 ||j==11 || j==12 || j==15){
+         soilHealth[i][j]=30; 
+        }
+      }
+      if(i==0 || i==4 || i==3 || i==7){
+      if(j==9 || j==10 || j==13 ||j==14){
+       soilHealth[i][j]=30; 
+      }
+      }
+      //soil3
+      if(i==1 || i==4 || i==7){
+        if(j==16 || j==19 || j==22){
+         soilHealth[i][j]=30; 
+        }
+        if(j==17 || j==20 || j==23){
+         soilHealth[i][j]=45; 
+        }
+      }
+      if(i==0 | i==3 || i==6){
+         if(j==17 || j==20 || j==23){
+         soilHealth[i][j]=30; 
+        }
+         if(j==18 || j==21){
+         soilHealth[i][j]=45; 
+        }
+      }
+      if(i==2 || i==5){
+        if(j==18 || j==21){
+         soilHealth[i][j]=30; 
+        }
+        if(j==16 || j==19 || j==22){
+         soilHealth[i][j]=45; 
+        }
+      }
+}
+}
+      //hole(health)
+
+    for(int p=1;p<24;p++){
+     int count=1+floor(random(2));
+     for(int k=0;k<count;k++){
+       int col=floor(random(8));
+       soilHealth[col][p]=0;
+     }
+    }
+
+
+
+  
+
+  // Initialize soidiers and their position
+   soldierY=new float[6];
+   soldierX=new float[6];
+  for(int i=0;i<6;i++){
+   int col= floor(random(8));
+   int row=floor(random(4))+i*4;
+   soldierY[i]=row*SOIL_SIZE;
+   soldierX[i]=col*col;
+  }
+  // Initialize cabbages and their position
+  cabbageX=new float[6];
+  cabbageY=new float[6];
+  for(int i=0;i<6;i++){
+   int col= floor(random(8));
+   int row=floor(random(4))+i*4;
+   cabbageY[i]=row*SOIL_SIZE;
+   cabbageX[i]=col*SOIL_SIZE;
+  }
+                
+        
+}
+
+
+
 				
-			}
+			
 
 		}else{
 
